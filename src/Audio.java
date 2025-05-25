@@ -87,24 +87,27 @@ public class Audio{
         clip[3].setMicrosecondPosition(0);
         clip[3].start();
     }
-    
+    //Phát âm thanh khi người chơi nhấc gói hạt giống
     public static void seedlift(){
         clip[5].setMicrosecondPosition(0);
         clip[5].start();
     }
+    //Phát âm thanh khi gieo/trồng cây.
     public static void plant(){
         clip[6].setMicrosecondPosition(0);
         clip[6].start();
     }
+    //Phát âm thanh khi chọn xẻng
     public static void shovel(){
         clip[10].setMicrosecondPosition(0);
         clip[10].start();
     }
+    //Phát âm thanh khi đào/xoá cây bằng xẻng
     public static void remove(){
         clip[11].setMicrosecondPosition(0);
         clip[11].start();
     }
-    
+    //Phát âm thanh khi zombie ăn cây
     public static void eat(){
         clip[7].setMicrosecondPosition(0);
         clip[7].start();
@@ -112,21 +115,22 @@ public class Audio{
     public static boolean isEating(){
         return clip[7].isActive();
     }
-
+    //Phát âm thanh cảnh báo buzzer
     public static void buzzer(){
         clip[8].setMicrosecondPosition(0);
         clip[8].start();
     }
-
+    //Phát âm thanh khi "wave" zombie xuất hiện
     public static void wave(){
         clip[12].setMicrosecondPosition(0);
         clip[12].start();
     }
+    //Phát tiếng còi hú cảnh báo.
     public static void siren(){
         clip[13].setMicrosecondPosition(0);
         clip[13].start();
     }
-
+    //Zombie nói "brains"
     public static void brain1(){
         clip[14].setMicrosecondPosition(0);
         clip[14].start();
@@ -139,6 +143,7 @@ public class Audio{
         clip[16].setMicrosecondPosition(0);
         clip[16].start();
     }
+    //Zombie rên rỉ
     public static void groan1(){
         clip[17].setMicrosecondPosition(0);
         clip[17].start();
