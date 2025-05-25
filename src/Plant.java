@@ -6,14 +6,14 @@ import javax.sound.sampled.Clip;
 
 public class Plant<T> extends Actor{
     private T type;
-    private boolean idle=true, threaten=false, exploded=false;
-    private Timer timer, timer2, timer3; 
-    private int x, y; 
-    private int cw=74, ch=76; 
-    private static int[][] occ = new int[5][10];
-    private static Point[][] coor = new Point[5][9]; 
-    private Clip clip, clip2;
-    private Thread tcherry; 
+    private boolean idle=true, threaten=false, exploded=false;    // trạng thái
+    private Timer timer, timer2, timer3;     // dùng cho Peashooter, Repeater, Sunflower
+    private int x, y;     // vị trí cây trong lưới 5x9
+    private int cw=74, ch=76;     // kích thước cây (dùng cho Cherry)
+    private static int[][] occ = new int[5][10];    // trạng thái chiếm chỗ trong lưới
+    private static Point[][] coor = new Point[5][9];     // tọa độ pixel tương ứng với lưới
+    private Clip clip, clip2;    // âm thanh (cherry)
+    private Thread tcherry;     // thread chờ nổ cherry bomb
     public Plant(T type, int x, int y){
         this.type=type;
         this.x=x;
@@ -30,8 +30,8 @@ public class Plant<T> extends Actor{
             super.health = 200;
             tcherry = new Thread(new CherryWaits()); 
             try{
-                clip = AudioSystem.getClip();
-                clip2 = AudioSystem.getClip();
+                clip = AudioSystem.getClip();    // tiếng "phồng lên"
+                clip2 = AudioSystem.getClip();    // tiếng nổ
                 clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherry_enlarge.wav")))); 
                 clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherrybomb.wav")))); 
             }catch(Exception ex){ 
@@ -40,16 +40,15 @@ public class Plant<T> extends Actor{
         }else{}
     }
 
-    //initialization block
     {
-        //shoot pea every 2 seconds
+       // Peashooter bắn mỗi 2 giây
         timer=new Timer(2000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.peas.add(new Pea((int)type, x, y));
             }
         });
         
-        //repeater shoots second pea every 2.2 seconds
+        // Repeater bắn viên thứ hai sau 2.2 giây
         timer2=new Timer(2000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.peas.add(new Pea(3, x, y));
@@ -57,7 +56,7 @@ public class Plant<T> extends Actor{
         });
         timer2.setInitialDelay(2200);
 
-        //drop sun every 10 seconds
+        // Sunflower tạo mặt trời mỗi 10 giây
         timer3=new Timer(10000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.suns.add(new Sun(x, y));
@@ -87,17 +86,17 @@ public class Plant<T> extends Actor{
     }
 
     public boolean put(int x, int y, T type){
-        if(occ[x][y]==0){ //empty spot
+        if(occ[x][y]==0){ // nếu ô trống
             occ[x][y]=(int)type;
-            World.plants.add(new Plant<Integer>((int)type, x, y));
+            World.plants.add(new Plant<Integer>((int)type, x, y)); // thêm vào danh sách cây
             return true;
         }else{
-            return false;
+            return false;    // ô đã có cây
         }
     }
     public void attack(){
         timer.start();
-        if(type.equals(3)){ //repeater
+        if(type.equals(3)){ // Peashooter bắn
             timer2.start();
         }
         idle=false;
@@ -114,11 +113,10 @@ public class Plant<T> extends Actor{
 
 
     //cherrybomb
-    //private class Threading
     private class CherryWaits implements Runnable { 
         public void run() { 
             try{
-                Thread.sleep(800); //Exploded cherry waits for 800 milliseconds
+                Thread.sleep(800); //đợi 800ms rồi nổ
             } catch (InterruptedException e) {}
         }
     } 
@@ -136,10 +134,10 @@ public class Plant<T> extends Actor{
     public void setExplode(){
         exploded=true;
     }
-    public void cherry_enlarge(){ //play cherry_enlarge sound
+    public void cherry_enlarge(){ // phát âm thanh cherry phồng lên
         clip.start();
     }
-    public void cherrybomb(){ //play cherrybomb sound
+    public void cherrybomb(){ // phát âm thanh nổ
         clip.stop();
         clip2.start();
     }
