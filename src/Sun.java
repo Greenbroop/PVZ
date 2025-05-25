@@ -7,36 +7,34 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip; 
 
 public class Sun{
-    private int sunX, sunY, limitSunY; //falling sun x and y position (coordinate)
-    private boolean sunflower, waiting=false; //waiting thread
-    private Ellipse2D e_sun; //ellipse for falling sun
-    private static Timer timer; //set timer
-    private Clip clip;
-    private Thread tsun; //thread for waiting time
+    private int sunX, sunY, limitSunY; // tọa độ (x, y) hiện tại của đồng tiền mặt trời và vị trí giới hạn rơi
+    private boolean sunflower, waiting=false; // xác định đây là đồng tiền từ sunflower hay đồng tiền rơi + trạng thái chờ
+    private Ellipse2D e_sun; // hình elip biểu diễn mặt trời để vẽ trên màn hình
+    private static Timer timer; // timer để tạo đồng tiền mặt trời rơi tự động mỗi 5 giây
+    private Clip clip;    // dùng để phát âm thanh
+    private Thread tsun; // thread dùng cho thời gian chờ
 
     public Sun(){
-        setX();
-        sunY=-85;
-        setLimit();
-        sunflower=false;
+        setX();    // random vị trí x
+        sunY=-85;    // bắt đầu rơi từ ngoài màn hình (phía trên)
+        setLimit();    // random vị trí y giới hạn rơi (vị trí dừng)
+        sunflower=false;    // không phải mặt trời do sunflower tạo
     }
 
     public Sun(int x, int y){
         sunX=Plant.getCoor(x,y).getX()-15;
         sunY=Plant.getCoor(x,y).getY()-30;
-        sunflower=true;
+        sunflower=true;    // đánh dấu đây là đồng tiền từ sunflower
     }
 
-    //initialization block
     {
         tsun = new Thread(new SunWaits()); 
     }
 
-    //drop sun every 5 seconds
     public static void start(){
         timer=new Timer(5000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                World.suns.add(new Sun());
+                World.suns.add(new Sun());    // mỗi 5 giây tạo 1 đồng tiền mặt trời mới
             }
         });
         timer.setRepeats(true);
@@ -50,7 +48,7 @@ public class Sun{
     private class SunWaits implements Runnable { 
         public void run() { 
             try{
-                Thread.sleep(3000); //Sun waits for 3 seconds 
+                Thread.sleep(3000); // đợi 3 giây 
             } catch (InterruptedException e) {}
         }
     } 
@@ -72,24 +70,22 @@ public class Sun{
         this.e_sun=e_sun;
     }
     public void setX(){
-        sunX=(int)(Math.random() * (900-270+1)+270); //generate falling sunX from x=270 to x=900
+        sunX=(int)(Math.random() * (900-270+1)+270); // random x từ 270 đến 900
     }
     public void setLimit(){ 
-        limitSunY=(int)(Math.random() * (470-200+1)+200); //generate limit falling sunY from y=200 to y=470
+        limitSunY=(int)(Math.random() * (470-200+1)+200); // random y từ 200 đến 470 (giới hạn rơi)
     }
     public void setWaiting(){
         waiting=true;
     }
 
-    public void lower(){ //lower sun position
+    public void lower(){ // làm mặt trời rơi xuống (tăng tọa độ y)
         sunY+=2;
     }
 
-    public void points(){ //play points sound
-        try{
-            // create clip reference 
-            clip = AudioSystem.getClip();
-            // open audioInputStream to the clip 
+    public void points(){ //âm thanh khi nhận điểm
+        try{ 
+            clip = AudioSystem.getClip(); 
             clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Points.wav")))); 
         }catch(Exception ex){ 
             ex.printStackTrace();
