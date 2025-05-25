@@ -4,13 +4,13 @@ public class Point {
     private int x, y;
 
     // Constructor
-    // Point initialization (0, 0)
+    // Khởi tạo điểm mặc định
     public Point() {
       x = 0;
       y = 0;
     }
 
-    // Point initialization (x, y)
+    // tọa độ cụ thể
     public Point(int x, int y) {
       this.x = x;
       this.y = y;
@@ -43,7 +43,7 @@ public class Point {
       return Math.sqrt((this.x - p.x) * (this.x - p.x) + (this.y - p.y) * (this.y - p.y));
     }
 
-    // Print with format "(x,y)"
+    // tọa độ điểm dưới dạng chuỗi
     public String print() {
       return ("(" + this.x + "," + this.y + ")");
     }
