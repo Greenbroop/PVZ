@@ -7,20 +7,20 @@ import javax.sound.sampled.Clip;
 
 public class Zombie extends Actor implements Comparable<Zombie>{
     private int type, zombieDamage, lane, coorY, yp;
-    private float zombieSpeed, coorX; //zombie x coordinate
-    private int[] column = {296,377,458,539,620,701,782,863,944}; //9
-    private static int[] arrY = new int[5]; //zombie y coordinate
+    private float zombieSpeed, coorX; 
+    private int[] column = {296,377,458,539,620,701,782,863,944}; 
+    private static int[] arrY = new int[5]; 
     private static int n=0, max=50, interval, random, wave=20;
     private static boolean gameOver=false;
-    private static Timer timer; //spawning zombie timer
-    private Timer timer2; //attacking plant timer
+    private static Timer timer; //bộ đếm thời gian zombie
+    private Timer timer2; 
     private Clip clip;
 
     public Zombie(int type){
         this.type=type;
         coorX=1020f;
         coorY=arrY[setLane()];
-        if(type==1){ //Normal zombie
+        if(type==1){ //zombie thường
             super.health=50;
             zombieDamage=12;
             zombieSpeed=0.3f;
@@ -34,17 +34,16 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         }
     }
 
-    //initialization block
     {
-        //attacking plant every 1 second
+       //tấn công cây mỗi 1 giây
         timer2=new Timer(1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 for(Plant plant: World.plants){
-                    if(plant.getX()==lane && plant.getY()==yp){ //intersect plant
+                    if(plant.getX()==lane && plant.getY()==yp){ 
                         if(!Audio.isEating() && !gameOver){
                             Audio.eat();
                         }
-                        plant.hit(zombieDamage); //damage plant
+                        plant.hit(zombieDamage); 
                     }
                 }
             }
@@ -52,22 +51,21 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         timer2.setInitialDelay(200);
     }
 
-    //static initialization block
     static{
         for(int i=0;i<5;i++){
-            arrY[i]=117+i*98-82; //initialize zombies y coordinate
+            arrY[i]=117+i*98-82; 
         }
     }
 
-    //spawning zombie automatically
+    //tự động sinh ra zombie
     public static void start(int inter){
         interval=inter;
         timer=new Timer(interval*1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 if(n<max){
-                    n++; //increase count zombie
-                    World.zombies.add(new Zombie(setType())); //deploy zombie
-                    //sort zombie based on lane
+                    n++; //tăng số lượng zombie
+                    World.zombies.add(new Zombie(setType())); //triển khai zombie
+                    //sắp xếp zombie dựa trên làn đường
                     Collections.sort(World.zombies);
                     
                     playAudio();
@@ -78,11 +76,11 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         timer.setDelay(interval*900);
     }
     public static void stop(){
-        timer.stop(); //stop deploying zombie
+        timer.stop(); //dừng triển khai zombie
     }
 
     @Override
-	public int compareTo(Zombie z) { //sort zombies based on lane
+	public int compareTo(Zombie z) { //sắp xếp zombie dựa trên làn đường
 		return lane-z.getLane();
 	}
 
@@ -98,7 +96,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public int getCoorY(){return coorY;}
     public int getLane(){return lane;}
     
-    public int getColumn(){ //convert x coordinate to field column
+    public int getColumn(){ 
         int c=9;
         if(type==2){ //football zombie
             A: for(int i=8;i>=1;i--){
@@ -122,7 +120,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         return c;
     }
    
-    public int getColumnEat(){ //convert x coordinate to field column for attacking plant
+    public int getColumnEat(){ 
         int c=9;
         if(type==2){ //football zombie
             A: for(int i=8;i>=0;i--){
@@ -144,85 +142,85 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     
     //setter
     public int setLane(){
-        lane=(int)(Math.random() * 5); //generate zombie lane from 0 to 4
+        lane=(int)(Math.random() * 5); //tạo làn đường zombie từ 0 đến 4
         return lane;
     }
     
     public static int setType(){
-        if(n<=3){ //easy
+        if(n<=3){ //dễ
             timer.setDelay(interval*550);
-            return 1; //normal zombie
-        }else if(n<=6){ //medium
+            return 1; //zombie thường
+        }else if(n<=6){ //thường
             timer.setDelay(interval*250);
-            if((int)(Math.random() * 3)==2){ //generate zombie type from 0 to 2
+            if((int)(Math.random() * 3)==2){ //tạo ra loại zombie từ 0 đến 2
                 return 2; //football zombie
             }else{
-                return 1; //normal zombie
+                return 1; //zombie thường
             }
-        }else if(n<=wave){ //hard
+        }else if(n<=wave){ //khó
             timer.setDelay(interval*200);
-            if(n==wave){ //stop when final wave zombies are about to come
+            if(n==wave){ //dừng lại khi đợt zombie cuối cùng sắp tới
                 timer.stop(); //wait for final wave
             }
-            random=(int)(Math.random() * 4); //generate zombie type from 0 to 3
+            random=(int)(Math.random() * 4); //tạo ra loại zombie từ 0 đến 3
             if(random<=1){ //0 or 1
                 return 1; //normal zombie
             }else if(random==2){ //2
                 return 2; //football zombie
             }else{ //3
-                return 3; //flying zombie
+                return 3; //Zombie bay
             }
         }else{ //(n<=max) extreme
             timer.setDelay(interval*100);
-            random=(int)(Math.random() * 6); //generate zombie type from 0 to 5
-            if(random<=2){ //0, 1, or 2
+            random=(int)(Math.random() * 6); //tạo ra loại zombie từ 0 đến 5
+            if(random<=2){ 
                 return 2; //football zombie
-            }else if(random<=4){ //3 or 4
-                return 3; //flying zombie
+            }else if(random<=4){ 
+                return 3; //zombie bay
             }else{ //5
-                return 1; //normal zombie
+                return 1; //zombie thường
             }
         }
     }
     
     public void attack(){
         yp=getColumnEat();
-        //check if zombie intersects plant
+       //kiểm tra xem zombie có giao nhau với cây không
         if(Plant.getOcc(lane, yp)!=0){ //intersect plant
             A: for(Plant plant: World.plants){
                 if(plant.getX()==lane && plant.getY()==yp){
                     timer2.start();
-                    if(plant.isDead()){ //plant dies
-                        plant.stop(); //stop plant's activity
-                        Plant.setOcc(lane, yp); //set spot to empty
-                        timer2.stop(); //stop attacking plant
+                    if(plant.isDead()){ //cây chết
+                        plant.stop(); //dừng hoạt động của cây
+                        Plant.setOcc(lane, yp); //đặt chỗ trống
+                        timer2.stop(); //dừng tấn công cây
                         World.plants.remove(plant);
                         break A;
                     }
                 }
             }
-        }else{ //field empty
+        }else{ //trường trống
             move();
         }
     }
     public void move(){
-        coorX-=zombieSpeed; //move
+        coorX-=zombieSpeed; //di chuyển
     }
     public void stopEat(){
-        timer2.stop(); //stop eating plant
+        timer2.stop(); //ngừng ăn thực vật
     }
 
-    public static void startWave(){ //start final wave
-        Audio.wave(); //play wave audio
+    public static void startWave(){ //bắt đầu đợt sóng cuối cùng
+        Audio.wave(); //phát wave audio
         timer.setInitialDelay(4000);
         timer.start();
-        World.setWave(1); //set wave to 1
+        World.setWave(1); //đặt wave to 1
     }
     
     public boolean gameOver(){
-        if(coorX>210){ //zombie hasn't reach house yet
+        if(coorX>210){ //zombie vẫn chưa tới nhà
             return false;
-        }else{ //zombie reaches house
+        }else{ //zombie tới nhà
             gameOver=true;
             return true;
         }
@@ -256,7 +254,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         }
 
         if(n==wave+1){
-            Audio.siren(); //play siren audio
+            Audio.siren(); //phát siren audio
             World.setWave(2); //set wave to 2
         }else if(n==wave+2){
             Audio.brain1();
@@ -268,22 +266,22 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         }
     }
 
-    public void yuck(){ //play yuck sound
+    public void yuck(){ //phát yuck sound
         try{
-            // create clip reference 
+            // tạo tham chiếu clip 
             clip = AudioSystem.getClip(); 
-            // open audioInputStream to the clip 
+            // mở audioInputStream vào clip 
             clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck.wav")))); 
         }catch(Exception ex){ 
             ex.printStackTrace();
         } 
         clip.start();
     }
-    public void yuck2(){ //play yuck2 sound
+    public void yuck2(){ //phát yuck2 sound
         try{
-            // create clip reference 
+            // tạo tham chiếu clip 
             clip = AudioSystem.getClip(); 
-            // open audioInputStream to the clip 
+            // mở audioInputStream vào clip
             clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck2.wav")))); 
         }catch(Exception ex){ 
             ex.printStackTrace();
