@@ -3,16 +3,16 @@ import javax.sound.sampled.Clip;
 
 public class Pea{
     private int type, damage;
-    private int x, y; //array for pea location [5][9]
-    private int coorX, coorY; //pea coordinate
-    private static Point[][] pea_f = new Point[5][9]; //array for pea coordinate
-    private Clip clip;
+    private int x, y; // Vị trí logic trên lưới 5x9
+    private int coorX, coorY; // Tọa độ thực trên màn hình
+    private static Point[][] pea_f = new Point[5][9]; // Ma trận chứa tọa độ của từng ô
+    private Clip clip;  // Dùng để phát âm thanh
     
     public Pea(int type, int x, int y){
         this.type=type;
         this.x=x;
         this.y=y;
-        convert(x,y);
+        convert(x,y); // chuyển x, y thành coorX, coorY
         if(type==2){ //Peashooter
         	damage=6;
         }
@@ -21,7 +21,6 @@ public class Pea{
         }
     }
 
-    //static initialization block
     static{
         for(int i=0;i<5;i++){
             for(int j=0;j<9;j++){
@@ -47,22 +46,20 @@ public class Pea{
         coorY=pea_f[i][j].getY();
     }
 
-    public void splat(){ //play splat sound
-        try{
-            // create clip reference 
+    public void splat(){ //va chạm bình thường
+        try{  
             clip = AudioSystem.getClip();
-            // open audioInputStream to the clip 
             clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Splat.wav")))); 
         }catch(Exception ex){ 
             ex.printStackTrace();
         }
         clip.start();
     }
-    public void shieldhit(){ //play shieldhit sound
+    public void shieldhit(){ //va chạm với zombie có khiên
         try{
-            // create clip reference 
+            // tạo clip 
             clip = AudioSystem.getClip();
-            // open audioInputStream to the clip 
+            // mở audioInputStream  
             clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Shieldhit.wav")))); 
         }catch(Exception ex){ 
             ex.printStackTrace();
