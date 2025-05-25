@@ -15,7 +15,7 @@ public class Audio{
             for(int i=0;i<20;i++){
                 clip[i] = AudioSystem.getClip(); 
             }
-            //Nhạc
+            //Nhạc+mở 20 file âm thanh
             clip[0].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Menu.wav")))); 
             clip[1].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Background.wav")))); 
             clip[2].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Win.wav")))); 
@@ -38,10 +38,10 @@ public class Audio{
             clip[19].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Groan3.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Cannot open audio!"); //show error dialog
+            JOptionPane.showMessageDialog(null, "Cannot open audio!"); //thông báo lỗi
         } 
 
-        //play zombies coming after 12 seconds
+        //12 giây phát âm thanh zombie đến
         timer = new Timer(12000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 clip[4].setMicrosecondPosition(0);
@@ -50,35 +50,36 @@ public class Audio{
             }
         });
     }
-
+    //Phát nhạc menu
     public static void menu(){
         clip[0].start(); 
         clip[0].loop(Clip.LOOP_CONTINUOUSLY);
     }
+    //Phát tiếng cười ác quỷ
     public static void evillaugh(){
-        clip[0].stop();
+        clip[0].stop();   // Dừng nhạc menu
         clip[0]=null;
-        clip[9].start(); 
+        clip[9].start();     //// Phát tiếng cười (Evillaugh)
     }
-
+    //Bắt đầu game
     public static void begin(){
-        clip[9]=null;
-        clip[2].stop();
-        clip[3].stop();
+        clip[9]=null;        // xoá Evillaugh
+        clip[2].stop();      // dừng win
+        clip[3].stop();      // dừng lose
         
-        clip[1].start(); 
+        clip[1].start();     // phát nhạc nền
         clip[1].loop(Clip.LOOP_CONTINUOUSLY);
-        timer.start();
+        timer.start();        // khởi động timer để 12 giây sau phát "zombie coming"
     }
 
     public static void win(){
-        clip[1].stop(); 
-        clip[1].setMicrosecondPosition(0);
+        clip[1].stop();     // dừng nhạc nền
+        clip[1].setMicrosecondPosition(0);    // về đầu
         
-        clip[2].setMicrosecondPosition(0);
-        clip[2].start();
+        clip[2].setMicrosecondPosition(0);    // bắt đầu lại
+        clip[2].start();    // phát âm thanh thắng
     }
-
+    //Phát âm thanh thua
     public static void lose(){
         clip[1].stop(); 
         clip[1].setMicrosecondPosition(0);
