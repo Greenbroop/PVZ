@@ -11,25 +11,24 @@ public class Player {
     private Font font;
 
     public Player(){
-        sunCredits=50;
+        sunCredits=50;    // khởi tạo 50 mặt trời lúc bắt đầu
         temp=sunCredits;
         try{
             //create the font to use
             font=Font.createFont(Font.TRUETYPE_FONT, getClass().getResource("Assets/font/Chalkboard.ttc").openStream()).deriveFont(Font.BOLD, 20f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(font); //register the font
+            ge.registerFont(font);
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Cannot open font!"); //show error dialog
+            JOptionPane.showMessageDialog(null, "Cannot open font!"); 
         }
         //font=new Font("Chalkboard", Font.BOLD, 20); //load font
     }
 
-    public void draw(Graphics2D g){ //sunflower points
+    public void draw(Graphics2D g){ //điểm mặt trời
         g.setFont(font); 
         g.setColor(Color.BLACK);
-        FontMetrics metrics = g.getFontMetrics(font); //get font width and height
-        //animate sunflower points change
+        FontMetrics metrics = g.getFontMetrics(font); 
         if(sunCredits==temp){
             g.drawString(Integer.toString(temp), 91-(metrics.stringWidth(Integer.toString(temp))/2), 136);
         }else if(sunCredits<temp){
