@@ -186,7 +186,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public void attack(){
         yp=getColumnEat();
        //kiểm tra xem zombie có giao nhau với cây không
-        if(Plant.getOcc(lane, yp)!=0){ //intersect plant
+        if(Plant.getOcc(lane, yp)!=0){ // có cây ở đó
             A: for(Plant plant: World.plants){
                 if(plant.getX()==lane && plant.getY()==yp){
                     timer2.start();
@@ -199,7 +199,8 @@ public class Zombie extends Actor implements Comparable<Zombie>{
                     }
                 }
             }
-        }else{ //trường trống
+        }else{ 
+		// không có cây thì di chuyển
             move();
         }
     }
