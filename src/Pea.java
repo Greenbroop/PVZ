@@ -24,7 +24,7 @@ public class Pea{
     static{
         for(int i=0;i<5;i++){
             for(int j=0;j<9;j++){
-                //set coordinate for pea field
+                // tọa độ chính xác để viên đạn bay ra từ từng vị trí cây trồng
                 pea_f[i][j] = new Point(296+j*81+28, 117+i*98-19);
             }
         }
@@ -41,7 +41,7 @@ public class Pea{
     public void move(){
         coorX+=6; //speed = 6
     }
-    public void convert(int i, int j){ //convert pea position to coordinate
+    public void convert(int i, int j){ //chuyển đổi vị trí hạt đậu thành tọa độ
         coorX=pea_f[i][j].getX();
         coorY=pea_f[i][j].getY();
     }
