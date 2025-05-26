@@ -14,7 +14,7 @@ public class Player {
         sunCredits=50;    // khởi tạo 50 mặt trời lúc bắt đầu
         temp=sunCredits;
         try{
-            //create the font to use
+            //tạo phông chữ để sử dụng
             font=Font.createFont(Font.TRUETYPE_FONT, getClass().getResource("Assets/font/Chalkboard.ttc").openStream()).deriveFont(Font.BOLD, 20f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);
@@ -49,6 +49,7 @@ public class Player {
     public void addSunCredits(){
         sunCredits+=25;
     }
+    //Đặt lại số điểm mặt trời về 50
     public void resetCredits(){
         sunCredits=50;
     }
@@ -59,7 +60,7 @@ public class Player {
     public void setChoice(int choice){
         this.choice=choice;
     }
-    
+    //trả về giá trị true/false xem người chơi có đang chọn xẻng
     public boolean getShovel(){
         return shovel;
     }
