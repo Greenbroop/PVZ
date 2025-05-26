@@ -22,19 +22,22 @@ public class Player {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open font!"); 
         }
-        //font=new Font("Chalkboard", Font.BOLD, 20); //load font
     }
 
     public void draw(Graphics2D g){ //điểm mặt trời
         g.setFont(font); 
         g.setColor(Color.BLACK);
+        // lấy thông tin kích thước font
         FontMetrics metrics = g.getFontMetrics(font); 
         if(sunCredits==temp){
+            // vẽ số nếu giá trị không thay đổi
             g.drawString(Integer.toString(temp), 91-(metrics.stringWidth(Integer.toString(temp))/2), 136);
+            // giảm temp để tạo hiệu ứng chuyển động
         }else if(sunCredits<temp){
             temp-=5;
             g.drawString(Integer.toString(temp), 91-(metrics.stringWidth(Integer.toString(temp))/2), 136);
-        }else{ //sunCredits>temp
+        }else{ 
+            // tăng temp nếu cần hiển thị giá trị cao hơn
             temp+=5;
             g.drawString(Integer.toString(temp), 91-(metrics.stringWidth(Integer.toString(temp))/2), 136);
         }
