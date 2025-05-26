@@ -354,19 +354,19 @@ public class World extends JPanel implements ActionListener{
                 }
             
                 //Mặt trời rơi
-                Iterator<Sun> its = suns.iterator(); 
+                Iterator<Sun> its = suns.iterator(); 	
                 while (its.hasNext()){
                     sun=its.next();
-                    if(sun.isSunflower()){ //mặt trời từ mặt trời
+                    if(sun.isSunflower()){ // Mặt trời do Sunflower tạo ra
                         if(!sun.isWaiting()){ 
-                            sun.startTimer(); 
+                            sun.startTimer(); 	// Bắt đầu đếm thời gian tồn tại của mặt trời
                             sun.setWaiting(); 
                         }
-                        if(sun.isTsunAlive()){ 
-                            g.drawImage(img[1],sun.getX(),sun.getY(),80,80,this);
+                        if(sun.isTsunAlive()){ 	// Nếu mặt trời chưa bị nhặt
+                            g.drawImage(img[1],sun.getX(),sun.getY(),80,80,this);	// Vẽ mặt trời tại vị trí (x,y)
                             sun.setE(new Ellipse2D.Float(sun.getX(), sun.getY(), 80, 80));
                         }else{ 
-                            its.remove();
+                            its.remove();	// Nếu mặt trời hết thời gian, loại bỏ khỏi danh sách mặt trời
                         }
                     }else{ //mặt trời từ trời
                         if(sun.getY()<sun.getLimit()){ //mặt trời rơi xuống
