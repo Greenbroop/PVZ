@@ -514,7 +514,7 @@ public class World extends JPanel implements ActionListener{
                                     if(field[i][j].contains(e.getPoint())){ //trồng cây trong ruộng
                                         if(plant.put(i,j,player.getChoice())){ //chỗ trống
                                             Audio.plant(); //phát plant sound
-                                            player.plant();
+                                            player.plant();	// gọi hàm xử lý khi trồng cây (ví dụ trừ sun)
                                         }
                                         player.setChoice(0);
                                         break A;
