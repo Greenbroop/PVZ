@@ -460,21 +460,21 @@ public class World extends JPanel implements ActionListener{
                             if(sun.getE().contains(e.getPoint())){ //click mặt trời rơi xuống
                                 sun.points(); //phát âm thanh lấy sun
                                 player.addSunCredits(); //cộng 25 điểm sun
-                                sun_clicked=true;
+                                sun_clicked=true;	 // Đánh dấu đã nhặt mặt trời
                                 its.remove();	 // xóa sun khỏi danh sách
                                 break A;
                             }
                         }catch(Exception ex){}
                     }
                     if(!sun_clicked){ //không nhấn vào mặt trời
-                        // check if mouse clicked plants
+                        // Kiểm tra xem người chơi click vào ô chọn cây nào (sunflower, peashooter, repeater,...)
                         if(rec[3].contains(e.getPoint())) { //click vào sunflower
-                            if(player.getCredits()>=50){
+                            if(player.getCredits()>=50){	// Kiểm tra đủ điểm sun để mua
                                 Audio.seedlift(); //phát seedlift sound
-                                player.setChoice((player.getChoice()==1) ? 0:1);
+                                player.setChoice((player.getChoice()==1) ? 0:1);	// Chọn hoặc hủy chọn sunflower
                             }else{
                                 Audio.buzzer(); //phát buzzer sound
-                                player.setChoice(0);
+                                player.setChoice(0);	// Không chọn cây nào
                             }
                         }else if(rec[4].contains(e.getPoint())) { //nhấn peashooter
                             if(player.getCredits()>=100){
@@ -509,6 +509,7 @@ public class World extends JPanel implements ActionListener{
                                 player.setChoice(0);
                             }
                         }else if(player.getChoice()!=0){ 
+				// Nếu đã chọn loại cây, xử lý trồng cây trên field
                             A: for(i=0;i<5;i++){
                                 for(j=0;j<9;j++){
                                     if(field[i][j].contains(e.getPoint())){ //trồng cây trong ruộng
@@ -521,8 +522,8 @@ public class World extends JPanel implements ActionListener{
                                     }
                                 }
                             }
-                            if(i==5){
-                                player.setChoice(0);
+                            if(i==5){	// Nếu không trồng được cây
+                                player.setChoice(0);	// Reset lựa chọn cây
                             }
                         }
                     }else{sun_clicked=false;}
